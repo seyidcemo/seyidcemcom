@@ -20,11 +20,11 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: #000;
   color: #fff;
-  min-height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* ==============================
@@ -97,9 +97,10 @@ body {
   justify-content: center;
   width: 100%;
   max-width: 640px;
-  padding: 48px 24px;
+  height: 100%;
+  padding: clamp(16px, 3dvh, 40px) 24px;
   margin: 0 auto;
-  gap: 40px;
+  gap: clamp(14px, 3.5dvh, 36px);
 }
 
 /* ==============================
@@ -180,7 +181,7 @@ body {
 }
 
 .logo {
-  max-width: 180px;
+  max-width: clamp(90px, 18dvh, 180px);
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -214,7 +215,8 @@ body {
    ============================== */
 
 .video-wrapper {
-  width: 100%;
+  /* 16:9 oranını koruyarak genişliği ekran yüksekliğine göre sınırla */
+  width: min(100%, calc(42dvh * 16 / 9));
 }
 
 .video-container {
@@ -385,40 +387,39 @@ body {
 
 @media (max-width: 600px) {
   .container {
-    padding: 36px 20px;
-    gap: 32px;
+    padding: clamp(12px, 2.5dvh, 32px) 20px;
+    gap: clamp(10px, 2.8dvh, 28px);
   }
 
   .logo {
-    max-width: 140px;
+    max-width: clamp(80px, 15dvh, 140px);
   }
 
   .buttons {
     flex-direction: column;
-    gap: 12px;
+    gap: clamp(8px, 1.4dvh, 12px);
   }
 
   .stream-btn {
     flex: 0 0 auto;
     width: 100%;
-    height: 52px;
+    height: clamp(42px, 6dvh, 52px);
     padding: 0 24px;
     font-size: 0.9rem;
+  }
+
+  .social-btn {
+    width: clamp(40px, 5.5dvh, 48px);
+    height: clamp(40px, 5.5dvh, 48px);
   }
 }
 
 @media (max-width: 380px) {
   .container {
-    padding: 28px 16px;
-    gap: 28px;
-  }
-
-  .logo {
-    max-width: 120px;
+    padding: 12px 16px;
   }
 
   .stream-btn {
-    height: 48px;
     padding: 0 16px;
     font-size: 0.85rem;
   }
