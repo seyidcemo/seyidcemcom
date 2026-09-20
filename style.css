@@ -72,6 +72,17 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  z-index: -3;
+}
+
+/* Duotone — screen harmanı siyahı marka mavisine çeker,
+   beyaz yıldızlara dokunmaz (screen(beyaz, x) = beyaz) */
+.bg-tint {
+  position: fixed;
+  inset: 0;
+  background: var(--brand-dark);
+  mix-blend-mode: screen;
+  pointer-events: none;
   z-index: -2;
 }
 
@@ -299,8 +310,6 @@ body {
   color: var(--brand-tint);
   text-decoration: none;
   background: var(--metal);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   transition:
     border-color 0.3s ease,
     color 0.3s ease,
@@ -360,8 +369,6 @@ body {
   color: var(--text);
   background: var(--metal);
   border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   transition:
     transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.3s ease,
