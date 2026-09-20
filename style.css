@@ -1,4 +1,39 @@
 /* ==============================
+   Renk Paleti — Fender Lake Placid Blue
+   Tüm renkler buradan yönetilir.
+   ============================== */
+
+:root {
+  /* Marka tonları */
+  --brand: #2A4F8C;
+  --brand-light: #4F79B8;
+  --brand-dark: #172D57;
+
+  /* Koyu zeminde AA kontrastı için türetilen açık tonlar */
+  --brand-tint: #8FB0DC;
+  /* metin/ikon — 8.4:1 */
+
+  /* Nötrler */
+  --bg: #0B1220;
+  /* maviye çalan siyah */
+  --surface-solid: #101B33;
+  --text: #EAF0FA;
+  /* 16.4:1 */
+  --text-muted: #A9BBD4;
+  /* 9.6:1 */
+
+  /* Yüzey & kenarlık */
+  --border: rgba(143, 176, 220, 0.20);
+  --border-strong: rgba(143, 176, 220, 0.55);
+  --glow-soft: rgba(79, 121, 184, 0.16);
+  --glow-strong: rgba(79, 121, 184, 0.34);
+
+  /* Metalik yüzey — açık tondan koyu tona */
+  --metal: linear-gradient(180deg, rgba(79, 121, 184, 0.20) 0%, rgba(23, 45, 87, 0.30) 100%);
+  --metal-hover: linear-gradient(180deg, rgba(79, 121, 184, 0.34) 0%, rgba(42, 79, 140, 0.38) 100%);
+}
+
+/* ==============================
    Reset & Base
    ============================== */
 
@@ -18,8 +53,8 @@ html {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--bg);
+  color: var(--text);
   height: 100dvh;
   display: flex;
   align-items: center;
@@ -44,7 +79,7 @@ body {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.7) 100%);
+    radial-gradient(ellipse at center, rgba(23, 45, 87, 0.38) 0%, rgba(11, 18, 32, 0.82) 100%);
   z-index: -1;
 }
 
@@ -58,19 +93,19 @@ body {
   gap: 10px;
   font-size: 0.85rem;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-muted);
 }
 
 .announce strong {
   font-weight: 600;
-  color: #fff;
+  color: var(--text);
 }
 
 .announce__dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #ff3b30;
+  background: var(--brand-tint);
   flex-shrink: 0;
   animation: dotPulse 2s ease-in-out infinite;
 }
@@ -78,11 +113,11 @@ body {
 @keyframes dotPulse {
   0%, 100% {
     opacity: 1;
-    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.5);
+    box-shadow: 0 0 0 0 var(--glow-strong);
   }
   50% {
     opacity: 0.6;
-    box-shadow: 0 0 0 5px rgba(255, 59, 48, 0);
+    box-shadow: 0 0 0 5px rgba(79, 121, 184, 0);
   }
 }
 
@@ -145,9 +180,9 @@ body {
   height: 450px;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.05) 30%,
-    rgba(255, 255, 255, 0.015) 55%,
+    rgba(143, 176, 220, 0.16) 0%,
+    rgba(79, 121, 184, 0.07) 30%,
+    rgba(42, 79, 140, 0.02) 55%,
     transparent 75%
   );
   pointer-events: none;
@@ -165,9 +200,9 @@ body {
   height: 500px;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0.12) 25%,
-    rgba(255, 255, 255, 0.04) 50%,
+    rgba(143, 176, 220, 0.34) 0%,
+    rgba(79, 121, 184, 0.16) 25%,
+    rgba(42, 79, 140, 0.05) 50%,
     transparent 70%
   );
   pointer-events: none;
@@ -226,11 +261,11 @@ body {
   /* 16:9 */
   border-radius: 12px;
   overflow: hidden;
-  background: #111;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
   box-shadow:
-    0 0 20px rgba(255, 255, 255, 0.04),
-    0 8px 40px rgba(0, 0, 0, 0.55);
+    0 0 24px var(--glow-soft),
+    0 8px 40px rgba(11, 18, 32, 0.65);
 }
 
 .video-container iframe {
@@ -260,10 +295,10 @@ body {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--border);
+  color: var(--brand-tint);
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--metal);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition:
@@ -281,11 +316,11 @@ body {
 }
 
 .social-btn:hover {
-  border-color: rgba(255, 255, 255, 0.6);
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-strong);
+  color: var(--text);
+  background: var(--metal-hover);
   transform: translateY(-3px) scale(1.08);
-  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px var(--glow-strong);
 }
 
 .social-btn:active {
@@ -322,9 +357,9 @@ body {
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  background: var(--metal);
+  border: 1px solid var(--border);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition:
@@ -337,8 +372,10 @@ body {
 
 .stream-btn:hover {
   transform: translateY(-3px) scale(1.03);
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  background: var(--metal-hover);
+  border-color: var(--border-strong);
+  box-shadow: 0 8px 28px var(--glow-strong);
 }
 
 .stream-btn:active {
@@ -351,34 +388,19 @@ body {
   flex-shrink: 0;
 }
 
-/* --- Spotify --- */
+/* Platform ikonları kendi marka renklerini korur — tanınırlık için.
+   Buton yüzeyi ve hover efekti tamamen Lake Placid Blue. */
+
 .stream-btn--spotify .stream-btn__icon {
   color: #1DB954;
 }
 
-.stream-btn--spotify:hover {
-  border-color: rgba(29, 185, 84, 0.5);
-  box-shadow: 0 8px 28px rgba(29, 185, 84, 0.15);
-}
-
-/* --- Apple Music --- */
 .stream-btn--apple .stream-btn__icon {
   color: #fc3c44;
 }
 
-.stream-btn--apple:hover {
-  border-color: rgba(252, 60, 68, 0.45);
-  box-shadow: 0 8px 28px rgba(252, 60, 68, 0.12);
-}
-
-/* --- YouTube Music --- */
 .stream-btn--youtube .stream-btn__icon {
   color: #FF0000;
-}
-
-.stream-btn--youtube:hover {
-  border-color: rgba(255, 0, 0, 0.45);
-  box-shadow: 0 8px 28px rgba(255, 0, 0, 0.12);
 }
 
 /* ==============================
@@ -438,7 +460,7 @@ body::after {
   width: 600px;
   height: 600px;
   background: radial-gradient(circle,
-      rgba(255, 255, 255, 0.015) 0%,
+      var(--glow-soft) 0%,
       transparent 70%);
   pointer-events: none;
   z-index: -1;
