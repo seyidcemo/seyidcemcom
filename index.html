@@ -27,9 +27,25 @@
   <link rel="icon" type="image/png" href="favicon.png?v=2" />
   <link rel="apple-touch-icon" href="favicon.png?v=2" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="preload" as="image" href="logo.png" />
+  <link rel="preload" as="image" href="logo-a.png" />
+
+  <!-- Açılış animasyonu: içerik görünmeden önce sınıfları ekle ki sayfa bir an görünüp kaybolmasın.
+       intro.js yüklenemezse 10 sn sonra içerik yine de açılır. -->
+  <script>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('has-intro', 'intro-playing', 'intro-warping');
+      setTimeout(() => document.documentElement.classList.remove('intro-playing', 'intro-warping'), 10000);
+    }
+  </script>
 </head>
 
 <body>
+  <!-- Intro — hiper uzay sıçrayışı, S kendini yazar, sonra sitedeki yerine süzülür (intro.js) -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <canvas class="intro__warp"></canvas>
+  </div>
+
   <!-- Space Background -->
   <video class="bg-video" autoplay muted loop playsinline aria-hidden="true">
     <source src="background.mp4" type="video/mp4" />
@@ -41,7 +57,9 @@
 
     <!-- Logo -->
     <div class="logo-wrapper fade-in" style="--delay: 0s">
-      <img id="logo" src="logo.png" alt="Artist Logo" class="logo" />
+      <div id="logo" class="logo">
+        <img src="logo.png" alt="Artist Logo" />
+      </div>
     </div>
 
     <!-- Announcement — yeni çıkışta yorumdan çıkar, şarkı adını güncelle -->
@@ -123,6 +141,8 @@
 
   </main>
 
+  <script src="s-writer.js"></script>
+  <script src="intro.js"></script>
   <script src="script.js"></script>
 </body>
 

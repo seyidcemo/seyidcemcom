@@ -55,11 +55,12 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--bg);
   color: var(--text);
-  height: 100dvh;
+  /* Sığdığında ekranı tam doldurup ortalar; sığmadığında (yatay telefon, küçük ekran) kaydırılır */
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 /* ==============================
@@ -143,10 +144,14 @@ body {
   justify-content: center;
   width: 100%;
   max-width: 640px;
-  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   padding: clamp(16px, 3dvh, 40px) 24px;
   margin: 0 auto;
   gap: clamp(14px, 3.5dvh, 36px);
+  /* Logo parlaması (500px) dar ekranlarda yanlardan taşıp sayfayı genişletmesin —
+     Android Chrome aksi halde sayfayı uzaklaştırır ve ortalama kayar */
+  overflow-x: clip;
 }
 
 /* ==============================
@@ -165,6 +170,94 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ==============================
+   Intro — hiper uzay sıçrayışı, S kendini yazar, sonra logonun yerine süzülür
+   ============================== */
+
+.intro {
+  display: none;
+}
+
+.intro-playing .intro {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.intro__warp {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Hiper uzaydan çıkış: ışık çizgileri yavaşlarken katman sitenin yıldızlarına karışır.
+   Geçiş, intro kaldırılmadan (1.2 sn) önce tamamen biter — ekranda iz kalmaz. */
+.intro--leaving {
+  pointer-events: none;
+}
+
+.intro--leaving .intro__warp {
+  opacity: 0;
+  transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.intro__logo {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(62vmin, 460px);
+  height: min(62vmin, 460px);
+  transform-origin: 0 0;
+  overflow: visible;
+  /* S'nin kenarlarını ışık çizgilerinden ayıran ince koyu gölge (intro.js SHADOW ile aynı) */
+  filter: drop-shadow(0 2px 6px rgba(5, 10, 20, 0.7)) drop-shadow(0 0 18px rgba(5, 10, 20, 0.55));
+}
+
+/* Arka plan videosu sıçrayış boyunca biraz yakın durur, çıkışta "varış" hissiyle yerine oturur */
+.has-intro .bg-video {
+  transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intro-warping .bg-video {
+  transform: scale(1.12);
+}
+
+/* Intro varken logo kendi giriş animasyonunu kullanmaz: intro onu yerine bırakır */
+.has-intro .logo-wrapper {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+.intro-playing .logo-wrapper {
+  visibility: hidden;
+}
+
+.intro-playing .logo {
+  animation: none;
+}
+
+.intro-playing .fade-in {
+  animation-play-state: paused;
+}
+
+/* Intro sırasında sayfa kaymasın: S'nin süzüleceği hedef sabit kalmalı */
+html.intro-playing {
+  overflow: hidden;
+}
+
+.has-intro .logo-wrapper::before {
+  transition: opacity 0.9s ease;
+}
+
+.intro-playing .logo-wrapper::before {
+  opacity: 0;
 }
 
 /* ==============================
@@ -227,23 +320,49 @@ body {
 }
 
 .logo {
+  /* Intro'daki S'nin gölgesinin logo boyutundaki karşılığı — intro.js LOGO_SHADOW ile aynı */
+  --logo-shadow: drop-shadow(0 1px 2.5px rgba(5, 10, 20, 0.7)) drop-shadow(0 0 7px rgba(5, 10, 20, 0.55));
   max-width: clamp(90px, 18dvh, 180px);
   width: 100%;
-  height: auto;
-  object-fit: contain;
+  aspect-ratio: 1;
   position: relative;
   z-index: 1;
+  filter: brightness(1) var(--logo-shadow);
   animation: logoBreathe 4s ease-in-out infinite;
 }
 
-/* Continuous breathe — runs on all devices */
+.logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Logoya tıklayınca S yerinde yeniden yazılır (script.js) */
+.logo__write {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+
+.logo--writing .logo__write {
+  visibility: visible;
+}
+
+.logo--writing img {
+  visibility: hidden;
+}
+
+/* Continuous breathe — runs on all devices.
+   --logo-shadow her karede korunur ki logo arka plandan ayrı dursun */
 @keyframes logoBreathe {
   0%, 100% {
-    filter: brightness(1);
+    filter: brightness(1) var(--logo-shadow);
     transform: scale(1);
   }
   50% {
-    filter: brightness(1.18);
+    filter: brightness(1.18) var(--logo-shadow);
     transform: scale(1.04);
   }
 }
@@ -251,7 +370,7 @@ body {
 /* Hover fade-in boost — pauses breathe, smoothly brightens */
 .logo-wrapper.logo--active .logo {
   animation-play-state: paused;
-  filter: brightness(1.35) !important;
+  filter: brightness(1.35) var(--logo-shadow) !important;
   transform: scale(1.06) !important;
   transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
